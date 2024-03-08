@@ -2,17 +2,16 @@
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
-## Creating a project
+## Setting up project
+- Create a supabase database
+- Use the migration file in ./drizzle to populate Supabase
+- Create .env file locally if you want to run it locally and add DATABASE_URL with the supabase connection string
+- Deploy to GIT
+- Create a new Cloudflare Pages application and connect to your new git repo
+- Add the DATABASE_URL as an environment variable
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Error
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
 
 ## Developing
 

@@ -1,13 +1,13 @@
 import type { Actions, PageServerLoad } from './$types';
-import { db } from '$lib/server/db';
+// import { db } from '$lib/server/db';
 import { posts } from '$lib/schema';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async (event) => {
 
 
     return {
-        posts: await db.query.posts.findMany()
+        posts: await event.locals.db.query.posts.findMany()
     }
 }
 
@@ -17,7 +17,7 @@ export const actions: Actions = {
         const title = formData.get('title')?.toString();
         const body = formData.get('body')?.toString();
 
-        await db.insert(posts).values({ title, body });
+        await event.locals.db.insert(posts).values({ title, body });
 
         return { success: true }
     },
@@ -29,7 +29,7 @@ export const actions: Actions = {
         const title = formData.get('title')?.toString();
         const body = formData.get('body')?.toString();
 
-        await db.update(posts).set({ title, body }).where(eq(posts.id, Number(post_id)));
+        await event.locals.db.update(posts).set({ title, body }).where(eq(posts.id, Number(post_id)));
 
         return { success: true }
     },
@@ -38,7 +38,7 @@ export const actions: Actions = {
         const post_id = formData.get('post_id')?.toString();
         if (!post_id) return fail(400, { message: 'Post ID missing' });
 
-        await db.delete(posts).where(eq(posts.id, Number(post_id)));
+        await event.locals.db.delete(posts).where(eq(posts.id, Number(post_id)));
 
         return { success: true }
     }
